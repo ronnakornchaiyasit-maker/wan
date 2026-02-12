@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Love Letter</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: #f4e9f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* PASSWORD SCREEN */
+.lock-screen {
+  text-align: center;
+}
+
+.password-dots {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.password-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #d9534f;
+  margin: 0 6px;
+}
+
+.password-dots span.filled {
+  background: #d9534f;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 70px);
+  gap: 12px;
+  justify-content: center;
+}
+
+.keypad button {
+  height: 60px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  background: #f5a3a2;
+  color: white;
+  cursor: pointer;
+}
+
+.keypad button:active {
+  transform: scale(0.95);
+}
+
+/* MAIN CONTENT */
+.main-content {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.envelope {
+  position: relative;
+  width: 300px;
+  height: 200px;
+}
+
+.pocket {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 150px solid #f5a3a2;
+  border-right: 150px solid #f5a3a2;
+  border-top: 100px solid transparent;
+}
+
+.letter {
+  position: absolute;
+  top: 25px;
+  left: 15px;
+  width: 270px;
+  height: 160px;
+  background: white;
+  border-radius: 6px;
+  padding: 15px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  transition: transform 0.5s;
+}
+
+.letter.open {
+  transform: translateY(-120px);
+}
+
+.controls {
+  margin-top: 30px;
+}
+
+.open-btn {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+.close-btn {
+  background: white;
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD PAGE -->
+<div id="lockScreen" class="lock-screen">
+  <h2>Enter Password</h2>
+
+  <div class="password-dots">
+    <span></span><span></span><span></span>
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="keypad">
+    <button onclick="pressKey(1)">1</button>
+    <button onclick="pressKey(2)">2</button>
+    <button onclick="pressKey(3)">3</button>
+    <button onclick="pressKey(4)">4</button>
+    <button onclick="pressKey(5)">5</button>
+    <button onclick="pressKey(6)">6</button>
+    <button onclick="pressKey(7)">7</button>
+    <button onclick="pressKey(8)">8</button>
+    <button onclick="pressKey(9)">9</button>
+    <button onclick="clearPass()">C</button>
+    <button onclick="pressKey(0)">0</button>
+    <button onclick="deleteLast()">⌫</button>
+  </div>
+</div>
+
+<!-- MAIN WEBSITE -->
+<div id="mainContent" class="main-content">
+  <h1>Valentine Love Letter</h1>
+
+  <div class="envelope">
+    <div class="letter" id="letter">
+      Dear crush,<br><br>
+      you are so beautiful ❤️<br>
+      every time I see you,<br>
+      my heart beats faster.
+    </div>
+    <div class="pocket"></div>
+  </div>
+
+  <div class="controls">
+    <button class="open-btn" onclick="openLetter()">OPEN</button>
+    <button class="close-btn" onclick="closeLetter()">CLOSE</button>
+  </div>
+</div>
+
+<script>
+const correctPassword = "258369";
+let input = "";
+
+function pressKey(num) {
+  if (input.length >= 6) return;
+  input += num;
+  updateDots();
+
+  if (input.length === 6) {
+    checkPassword();
+  }
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll(".password-dots span");
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("filled", index < input.length);
+  });
+}
+
+function clearPass() {
+  input = "";
+  updateDots();
+}
+
+function deleteLast() {
+  input = input.slice(0, -1);
+  updateDots();
+}
+
+function checkPassword() {
+  if (input === correctPassword) {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("mainContent").style.display = "flex";
+  } else {
+    alert("Password incorrect ❌");
+    clearPass();
+  }
+}
+
+function openLetter() {
+  document.getElementById("letter").classList.add("open");
+}
+
+function closeLetter() {
+  document.getElementById("letter").classList.remove("open");
+}
+</script>
+
+</body>
+</html>
